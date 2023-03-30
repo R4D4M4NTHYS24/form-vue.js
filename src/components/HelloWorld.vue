@@ -1,98 +1,108 @@
 <template>
-  <div>
-    <h2>Paso 1</h2>
-    <label for="pais">País</label>
-    <select id="pais" v-model="paisSeleccionado">
-      <option v-for="pais in paises" :value="pais" :key="pais">
-        {{ pais }}
-      </option>
-    </select>
+  <div class="container">
+    <div>
+      <h2>Paso 1</h2>
+      <label for="pais">País</label>
+      <select id="pais" v-model="paisSeleccionado">
+        <option v-for="pais in paises" :value="pais" :key="pais">
+          {{ pais }}
+        </option>
+      </select>
 
-    <label for="genero">Género</label>
-    <input type="text" id="genero" v-model="genero" />
+      <label for="genero">Género</label>
+      <select id="genero" v-model="genero">
+        <option v-for="genero in generos" :value="genero" :key="genero">
+          {{ genero }}
+        </option>
+      </select>
 
-    <label for="primer-nombre">Primer Nombre</label>
-    <input type="text" id="primer-nombre" v-model="primerNombre" />
+      <label for="primer-nombre">Primer Nombre</label>
+      <input type="text" id="primer-nombre" v-model="primerNombre" />
 
-    <label for="segundo-nombre">Segundo Nombre</label>
-    <input type="text" id="segundo-nombre" v-model="segundoNombre" />
+      <label for="segundo-nombre">Segundo Nombre</label>
+      <input type="text" id="segundo-nombre" v-model="segundoNombre" />
 
-    <label for="fecha-nacimiento">Fecha de Nacimiento</label>
-    <input type="date" id="fecha-nacimiento" v-model="fechaNacimiento" />
+      <label for="fecha-nacimiento">Fecha de Nacimiento</label>
+      <input type="date" id="fecha-nacimiento" v-model="fechaNacimiento" />
 
-    <label for="tipo-documento">Tipo de Documento</label>
-    <select id="tipo-documento" v-model="tipoDocumento">
-      <option value="cedula">Cedula de ciudadanía</option>
-      <option value="pasaporte">Pasaporte</option>
-      <option value="cedula-extranjeria">Cedula de extranjería</option>
-    </select>
+      <label for="tipo-documento">Tipo de Documento</label>
+      <select id="tipo-documento" v-model="tipoDocumento">
+        <option value="cedula">Cedula de ciudadanía</option>
+        <option value="pasaporte">Pasaporte</option>
+        <option value="cedula-extranjeria">Cedula de extranjería</option>
+      </select>
 
-    <label for="numero-documento">Número de Documento</label>
+      <label for="numero-documento">Número de Documento</label>
+      <input
+        type="number"
+        id="numero-documento"
+        v-model="numeroDocumento"
+        min="0"
+      />
+
+      <label for="foto-frente">Foto del Documento - Frente</label>
+      <input
+        type="file"
+        id="foto-frente"
+        accept=".jpg"
+        @change="cargarFotoFrente"
+      />
+
+      <label for="foto-reverso">Foto del Documento - Reverso</label>
+      <input
+        type="file"
+        id="foto-reverso"
+        accept=".jpg"
+        @change="cargarFotoReverso"
+      />
+
+      <button
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        @click="avanzarPaso"
+      >
+        Siguiente
+      </button>
+    </div>
+    <h2>Paso 2</h2>
+    <label for="correo-electronico">Correo Electrónico</label>
+    <input type="email" id="correo-electronico" v-model="correoElectronico" />
+
+    <label for="contrasena">Contraseña</label>
+    <input type="password" id="contrasena" v-model="contrasena" />
+
+    <label for="confirmacion-contrasena">Confirmación de Contraseña</label>
     <input
-      type="number"
-      id="numero-documento"
-      v-model="numeroDocumento"
-      min="0"
+      type="password"
+      id="confirmacion-contrasena"
+      v-model="confirmacionContrasena"
     />
 
-    <label for="foto-frente">Foto del Documento - Frente</label>
+    <label for="numero-telefono">Número de Teléfono</label>
+    <input type="tel" id="numero-telefono" v-model="numeroTelefono" />
+
+    <label for="numero-celular">Número de Celular</label>
+    <input type="tel" id="numero-celular" v-model="numeroCelular" />
+
+    <div v-if="errores.length">
+      <h3>Errores de Validación</h3>
+      <ul>
+        <li v-for="error in errores" :key="error">{{ error }}</li>
+      </ul>
+    </div>
+
+    <button @click="avanzarPaso">Siguiente</button>
+    <h2>Paso 3</h2>
+    <label for="direccion-residencia">Dirección Residencia</label>
     <input
-      type="file"
-      id="foto-frente"
-      accept=".jpg"
-      @change="cargarFotoFrente"
+      type="text"
+      id="direccion-residencia"
+      v-model="direccionResidencia"
     />
 
-    <label for="foto-reverso">Foto del Documento - Reverso</label>
-    <input
-      type="file"
-      id="foto-reverso"
-      accept=".jpg"
-      @change="cargarFotoReverso"
-    />
-
-    <button
-      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-      @click="avanzarPaso"
-    >
-      Siguiente
-    </button>
+    <label for="codigo-postal">Código Postal</label>
+    <input type="text" id="codigo-postal" v-model="codigoPostal" />
+    <button @click="enviarFormulario">Enviar</button>
   </div>
-  <h2>Paso 2</h2>
-  <label for="correo-electronico">Correo Electrónico</label>
-  <input type="email" id="correo-electronico" v-model="correoElectronico" />
-
-  <label for="contrasena">Contraseña</label>
-  <input type="password" id="contrasena" v-model="contrasena" />
-
-  <label for="confirmacion-contrasena">Confirmación de Contraseña</label>
-  <input
-    type="password"
-    id="confirmacion-contrasena"
-    v-model="confirmacionContrasena"
-  />
-
-  <label for="numero-telefono">Número de Teléfono</label>
-  <input type="tel" id="numero-telefono" v-model="numeroTelefono" />
-
-  <label for="numero-celular">Número de Celular</label>
-  <input type="tel" id="numero-celular" v-model="numeroCelular" />
-
-  <div v-if="errores.length">
-    <h3>Errores de Validación</h3>
-    <ul>
-      <li v-for="error in errores" :key="error">{{ error }}</li>
-    </ul>
-  </div>
-
-  <button @click="avanzarPaso">Siguiente</button>
-  <h2>Paso 3</h2>
-  <label for="direccion-residencia">Dirección Residencia</label>
-  <input type="text" id="direccion-residencia" v-model="direccionResidencia" />
-
-  <label for="codigo-postal">Código Postal</label>
-  <input type="text" id="codigo-postal" v-model="codigoPostal" />
-  <button @click="enviarFormulario">Enviar</button>
 </template>
 
 <script>
@@ -101,7 +111,8 @@ export default {
     return {
       paises: [],
       paisSeleccionado: "",
-      genero: "",
+      generos: ["Masculino", "Femenino", "Otro"],
+
       primerNombre: "",
       segundoNombre: "",
       fechaNacimiento: "",
@@ -119,10 +130,17 @@ export default {
       errores: [],
     };
   },
+
   methods: {
     cargarPaises() {
       // Aquí debería haber una llamada a una API que descargue los países
       // y los guarde en this.paises
+      fetch("https://restcountries.com/v2/all")
+        .then((response) => response.json())
+        .then((data) => {
+          this.paises = data.map((pais) => pais.name);
+        })
+        .catch((error) => console.error(error));
     },
     cargarFotoFrente(evento) {
       this.fotoFrente = evento.target.files[0];
@@ -154,6 +172,14 @@ export default {
       if (this.errores.length === 0) {
         this.$emit("avanzar-paso");
       }
+    },
+
+    validarPais() {
+      if (this.paisSeleccionado === "") {
+        this.errores.push("Debe seleccionar un país");
+        return false;
+      }
+      return true;
     },
   },
 
