@@ -64,24 +64,69 @@
       </button>
     </div>
     <h2>Paso 2</h2>
-    <label for="correo-electronico">Correo Electrónico</label>
-    <input type="email" id="correo-electronico" v-model="correoElectronico" />
+    <label for="correo-electronico">Correo electrónico</label>
+    <input
+      type="email"
+      class="form-control"
+      id="correo-electronico"
+      v-model="correoElectronico"
+      @input="validarCampo('correoElectronico', $event.target.value)"
+    />
+    <i
+      v-if="errores.includes('correoElectronico')"
+      class="fa fa-times text-danger"
+    ></i>
+    <i v-else class="fa fa-check text-success"></i>
 
     <label for="contrasena">Contraseña</label>
-    <input type="password" id="contrasena" v-model="contrasena" />
-
-    <label for="confirmacion-contrasena">Confirmación de Contraseña</label>
     <input
       type="password"
-      id="confirmacion-contrasena"
-      v-model="confirmacionContrasena"
+      class="form-control"
+      id="contrasena"
+      v-model="contrasena"
+      @input="validarCampo('contrasena', $event.target.value)"
     />
+    <i
+      v-if="errores.includes('contrasena')"
+      class="fa fa-times text-danger"
+    ></i>
+    <i v-else class="fa fa-check text-success"></i>
 
-    <label for="numero-telefono">Número de Teléfono</label>
-    <input type="tel" id="numero-telefono" v-model="numeroTelefono" />
+    <label for="confirmar-contrasena">Confirmar contraseña</label>
+    <input
+      type="password"
+      class="form-control"
+      id="confirmar-contrasena"
+      v-model="confirmarContrasena"
+      @input="validarCampo('confirmarContrasena', $event.target.value)"
+    />
+    <i
+      v-if="errores.includes('confirmarContrasena')"
+      class="fa fa-times text-danger"
+    ></i>
+    <i v-else class="fa fa-check text-success"></i>
 
-    <label for="numero-celular">Número de Celular</label>
-    <input type="tel" id="numero-celular" v-model="numeroCelular" />
+    <label for="telefono">Teléfono</label>
+    <input
+      type="tel"
+      class="form-control"
+      id="telefono"
+      v-model="telefono"
+      @input="validarCampo('telefono', $event.target.value)"
+    />
+    <i v-if="errores.includes('telefono')" class="fa fa-times text-danger"></i>
+    <i v-else class="fa fa-check text-success"></i>
+
+    <label for="celular">Celular</label>
+    <input
+      type="tel"
+      class="form-control"
+      id="celular"
+      v-model="celular"
+      @input="validarCampo('celular', $event.target.value)"
+    />
+    <i v-if="errores.includes('celular')" class="fa fa-times text-danger"></i>
+    <i v-else class="fa fa-check text-success"></i>
 
     <div v-if="errores.length">
       <h3>Errores de Validación</h3>
@@ -92,15 +137,30 @@
 
     <button @click="avanzarPaso">Siguiente</button>
     <h2>Paso 3</h2>
-    <label for="direccion-residencia">Dirección Residencia</label>
+    <label for="direccion">Dirección de residencia</label>
     <input
       type="text"
-      id="direccion-residencia"
-      v-model="direccionResidencia"
+      class="form-control"
+      id="direccion"
+      v-model="direccion"
+      @input="validarCampo('direccion', $event.target.value)"
     />
+    <i v-if="errores.includes('direccion')" class="fa fa-times text-danger"></i>
+    <i v-else class="fa fa-check text-success"></i>
 
     <label for="codigo-postal">Código Postal</label>
-    <input type="text" id="codigo-postal" v-model="codigoPostal" />
+    <input
+      type="text"
+      class="form-control"
+      id="codigo-postal"
+      v-model="codigoPostal"
+      @input="validarCampo('codigoPostal', $event.target.value)"
+    />
+    <i
+      v-if="errores.includes('codigoPostal')"
+      class="fa fa-times text-danger"
+    ></i>
+    <i v-else class="fa fa-check text-success"></i>
     <button @click="enviarFormulario">Enviar</button>
   </div>
 </template>
@@ -148,25 +208,122 @@ export default {
     cargarFotoReverso(evento) {
       this.fotoReverso = evento.target.files[0];
     },
+    validarCampo(campo, valor) {
+      let correoRegex;
+      let telefonoRegex;
+      let celularRegex;
+      let codigoPostalRegex;
+      switch (campo) {
+        case "correoElectronico":
+          correoRegex = /^\S+@\S+\.\S+$/;
+          if (!correoRegex.test(valor)) {
+            this.errores.push("El correo electrónico no es válido");
+          } else {
+            this.errores = this.errores.filter(
+              (error) => error !== "El correo electrónico no es válido"
+            );
+          }
+          break;
+
+        case "contrasena":
+          this.contrasenaValida = valor.length >= 8;
+          if (!this.contrasenaValida && valor !== "") {
+            this.errores.push("La contraseña debe tener al menos 8 caracteres");
+          } else {
+            this.errores = this.errores.filter(
+              (error) =>
+                error !== "La contraseña debe tener al menos 8 caracteres"
+            );
+          }
+          break;
+
+        case "confirmarContrasena":
+          this.confirmacionContrasenaValida = valor === this.contrasena;
+          if (!this.confirmacionContrasenaValida && valor !== "") {
+            this.errores.push("La confirmación de la contraseña no coincide");
+          } else {
+            this.errores = this.errores.filter(
+              (error) =>
+                error !== "La confirmación de la contraseña no coincide"
+            );
+          }
+          break;
+
+        case "numeroTelefono":
+          telefonoRegex = /^\d{7,}$/;
+          if (!telefonoRegex.test(valor) && valor !== "") {
+            this.errores.push("El número de teléfono no es válido");
+          } else {
+            this.errores = this.errores.filter(
+              (error) => error !== "El número de teléfono no es válido"
+            );
+          }
+          break;
+
+        case "numeroCelular":
+          celularRegex = /^\d{10}$/;
+          if (!celularRegex.test(valor) && valor !== "") {
+            this.errores.push("El número de celular no es válido");
+          } else {
+            this.errores = this.errores.filter(
+              (error) => error !== "El número de celular no es válido"
+            );
+          }
+          break;
+
+        case "direccionResidencia":
+          if (valor.length < 10) {
+            this.errores.push(
+              "La dirección de residencia debe tener al menos 10 caracteres"
+            );
+          } else {
+            this.errores = this.errores.filter(
+              (error) =>
+                error !==
+                "La dirección de residencia debe tener al menos 10 caracteres"
+            );
+          }
+          break;
+
+        case "codigoPostal":
+          codigoPostalRegex = /^\d{5}$/;
+          if (!codigoPostalRegex.test(valor) && valor !== "") {
+            this.errores.push("El código postal no es válido");
+          } else {
+            this.errores = this.errores.filter(
+              (error) => error !== "El código postal no es válido"
+            );
+          }
+          break;
+
+        default:
+          break;
+      }
+    },
+
     validarFormulario() {
       this.errores = [];
 
-      if (!this.correoElectronico) {
-        this.errores.push("El correo electrónico es obligatorio");
+      if (!this.correoElectronicoValido) {
+        this.errores.push("El correo electrónico no es válido");
       }
 
-      if (!this.contrasena) {
-        this.errores.push("La contraseña es obligatoria");
+      if (!this.contrasenaValida) {
+        this.errores.push("La contraseña debe tener al menos 8 caracteres");
       }
 
-      if (this.contrasena !== this.confirmacionContrasena) {
+      if (!this.confirmacionContrasenaValida) {
         this.errores.push("La confirmación de la contraseña no coincide");
       }
 
-      if (!this.numeroTelefono && !this.numeroCelular) {
+      if (!this.telefonoValido && !this.celularValido) {
         this.errores.push(
           "Se requiere al menos un número de teléfono o celular"
         );
+      }
+
+      if (!this.paisSeleccionadoValido) {
+        this.errores.push("Debe seleccionar un país");
       }
 
       if (this.errores.length === 0) {

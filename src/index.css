@@ -117,3 +117,38 @@ ul li:before {
     margin-right: 25vw;
   }
 }
+
+.form-control {
+  padding-right: 30px; /* Espacio para el icono */
+}
+
+.fa-check {
+  color: green;
+}
+
+.fa-times {
+  color: red;
+}
+
+.form-control + .fa {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.form-control + .fa.fa-check {
+  display: none; /* Ocultar el icono de check por defecto */
+}
+
+.form-control + .fa.fa-times {
+  display: none; /* Ocultar el icono de X por defecto */
+}
+
+.form-control:valid + .fa.fa-check {
+  display: block; /* Mostrar el icono de check si el campo es válido */
+}
+
+.form-control:invalid + .fa.fa-times {
+  display: block; /* Mostrar el icono de X si el campo es inválido */
+}
