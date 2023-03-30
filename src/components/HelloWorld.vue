@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div>
+    <div v-if="pasoActual === 1">
       <h2>Paso 1</h2>
       <label for="pais">País</label>
       <select id="pais" v-model="paisSeleccionado">
@@ -63,105 +63,115 @@
         Siguiente
       </button>
     </div>
-    <h2>Paso 2</h2>
-    <label for="correo-electronico">Correo electrónico</label>
-    <input
-      type="email"
-      class="form-control"
-      id="correo-electronico"
-      v-model="correoElectronico"
-      @input="validarCampo('correoElectronico', $event.target.value)"
-    />
-    <i
-      v-if="errores.includes('correoElectronico')"
-      class="fa fa-times text-danger"
-    ></i>
-    <i v-else class="fa fa-check text-success"></i>
+    <div v-if="pasoActual === 2">
+      <h2>Paso 2</h2>
+      <label for="correo-electronico">Correo electrónico</label>
+      <input
+        type="email"
+        class="form-control"
+        id="correo-electronico"
+        v-model="correoElectronico"
+        @input="validarCampo('correoElectronico', $event.target.value)"
+      />
+      <i
+        v-if="errores.includes('correoElectronico')"
+        class="fa fa-times text-danger"
+      ></i>
+      <i v-else class="fa fa-check text-success"></i>
 
-    <label for="contrasena">Contraseña</label>
-    <input
-      type="password"
-      class="form-control"
-      id="contrasena"
-      v-model="contrasena"
-      @input="validarCampo('contrasena', $event.target.value)"
-    />
-    <i
-      v-if="errores.includes('contrasena')"
-      class="fa fa-times text-danger"
-    ></i>
-    <i v-else class="fa fa-check text-success"></i>
+      <label for="contrasena">Contraseña</label>
+      <input
+        type="password"
+        class="form-control"
+        id="contrasena"
+        v-model="contrasena"
+        @input="validarCampo('contrasena', $event.target.value)"
+      />
+      <i
+        v-if="errores.includes('contrasena')"
+        class="fa fa-times text-danger"
+      ></i>
+      <i v-else class="fa fa-check text-success"></i>
 
-    <label for="confirmar-contrasena">Confirmar contraseña</label>
-    <input
-      type="password"
-      class="form-control"
-      id="confirmar-contrasena"
-      v-model="confirmarContrasena"
-      @input="validarCampo('confirmarContrasena', $event.target.value)"
-    />
-    <i
-      v-if="errores.includes('confirmarContrasena')"
-      class="fa fa-times text-danger"
-    ></i>
-    <i v-else class="fa fa-check text-success"></i>
+      <label for="confirmar-contrasena">Confirmar contraseña</label>
+      <input
+        type="password"
+        class="form-control"
+        id="confirmar-contrasena"
+        v-model="confirmarContrasena"
+        @input="validarCampo('confirmarContrasena', $event.target.value)"
+      />
+      <i
+        v-if="errores.includes('confirmarContrasena')"
+        class="fa fa-times text-danger"
+      ></i>
+      <i v-else class="fa fa-check text-success"></i>
 
-    <label for="telefono">Teléfono</label>
-    <input
-      type="tel"
-      class="form-control"
-      id="telefono"
-      v-model="telefono"
-      @input="validarCampo('telefono', $event.target.value)"
-    />
-    <i v-if="errores.includes('telefono')" class="fa fa-times text-danger"></i>
-    <i v-else class="fa fa-check text-success"></i>
+      <label for="telefono">Teléfono</label>
+      <input
+        type="tel"
+        class="form-control"
+        id="telefono"
+        v-model="telefono"
+        @input="validarCampo('telefono', $event.target.value)"
+      />
+      <i
+        v-if="errores.includes('telefono')"
+        class="fa fa-times text-danger"
+      ></i>
+      <i v-else class="fa fa-check text-success"></i>
 
-    <label for="celular">Celular</label>
-    <input
-      type="tel"
-      class="form-control"
-      id="celular"
-      v-model="celular"
-      @input="validarCampo('celular', $event.target.value)"
-    />
-    <i v-if="errores.includes('celular')" class="fa fa-times text-danger"></i>
-    <i v-else class="fa fa-check text-success"></i>
+      <label for="celular">Celular</label>
+      <input
+        type="tel"
+        class="form-control"
+        id="celular"
+        v-model="celular"
+        @input="validarCampo('celular', $event.target.value)"
+      />
+      <i v-if="errores.includes('celular')" class="fa fa-times text-danger"></i>
+      <i v-else class="fa fa-check text-success"></i>
 
-    <div v-if="errores.length">
-      <h3>Errores de Validación</h3>
-      <ul>
-        <li v-for="error in errores" :key="error">{{ error }}</li>
-      </ul>
+      <div v-if="errores.length">
+        <h3>Errores de Validación</h3>
+        <ul>
+          <li v-for="error in errores" :key="error">{{ error }}</li>
+        </ul>
+      </div>
+
+      <button @click="avanzarPaso">Siguiente</button>
     </div>
+    <div v-if="pasoActual === 3">
+      <h2>Paso 3</h2>
+      <label for="direccion">Dirección de residencia</label>
+      <input
+        type="text"
+        class="form-control"
+        id="direccion"
+        v-model="direccion"
+        @input="validarCampo('direccion', $event.target.value)"
+      />
+      <i
+        v-if="errores.includes('direccion')"
+        class="fa fa-times text-danger"
+      ></i>
+      <i v-else class="fa fa-check text-success"></i>
 
-    <button @click="avanzarPaso">Siguiente</button>
-    <h2>Paso 3</h2>
-    <label for="direccion">Dirección de residencia</label>
-    <input
-      type="text"
-      class="form-control"
-      id="direccion"
-      v-model="direccion"
-      @input="validarCampo('direccion', $event.target.value)"
-    />
-    <i v-if="errores.includes('direccion')" class="fa fa-times text-danger"></i>
-    <i v-else class="fa fa-check text-success"></i>
-
-    <label for="codigo-postal">Código Postal</label>
-    <input
-      type="text"
-      class="form-control"
-      id="codigo-postal"
-      v-model="codigoPostal"
-      @input="validarCampo('codigoPostal', $event.target.value)"
-    />
-    <i
-      v-if="errores.includes('codigoPostal')"
-      class="fa fa-times text-danger"
-    ></i>
-    <i v-else class="fa fa-check text-success"></i>
-    <button @click="enviarFormulario">Enviar</button>
+      <label for="codigo-postal">Código Postal</label>
+      <input
+        type="text"
+        class="form-control"
+        id="codigo-postal"
+        v-model="codigoPostal"
+        @input="validarCampo('codigoPostal', $event.target.value)"
+      />
+      <i
+        v-if="errores.includes('codigoPostal')"
+        class="fa fa-times text-danger"
+      ></i>
+      <i v-else class="fa fa-check text-success"></i>
+      <button @click="enviarFormulario">Enviar</button>
+    </div>
   </div>
 </template>
 
@@ -173,6 +183,13 @@ export default {
       paisSeleccionado: "",
       generos: ["Masculino", "Femenino", "Otro"],
 
+      pasoActual: 1,
+      campo1: "",
+      campo2: "",
+      campo3: "",
+      campo1Valido: false,
+      campo2Valido: false,
+      campo3Valido: false,
       primerNombre: "",
       segundoNombre: "",
       fechaNacimiento: "",
@@ -192,6 +209,33 @@ export default {
   },
 
   methods: {
+    avanzarPaso() {
+      this.pasoActual += 1;
+    },
+    retrocederPaso() {
+      this.pasoActual -= 1;
+    },
+    validarCampo1() {
+      this.campo1Valido = this.campo1.trim() !== "";
+      return this.campo1Valido;
+    },
+    validarCampo2() {
+      this.campo2Valido = this.campo2.trim() !== "";
+      return this.campo2Valido;
+    },
+    validarCampo3() {
+      this.campo3Valido = this.campo3.trim() !== "";
+      return this.campo3Valido;
+    },
+    validarCampos() {
+      return (
+        this.validarCampo1() && this.validarCampo2() && this.validarCampo3()
+      );
+    },
+    enviarFormulario() {
+      // Aquí enviarías el formulario al servidor
+    },
+
     cargarPaises() {
       // Aquí debería haber una llamada a una API que descargue los países
       // y los guarde en this.paises
@@ -362,3 +406,9 @@ export default {
   },
 };
 </script>
+
+<style>
+.is-invalid {
+  border-color: red;
+}
+</style>
