@@ -51,7 +51,12 @@
       @change="cargarFotoReverso"
     />
 
-    <button @click="avanzarPaso">Siguiente</button>
+    <button
+      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      @click="avanzarPaso"
+    >
+      Siguiente
+    </button>
   </div>
   <h2>Paso 2</h2>
   <label for="correo-electronico">Correo Electrónico</label>
