@@ -25,7 +25,6 @@ export default {
 }
 
 img {
-  margin-left: 42vw;
-  margin-right: 42vw;
+  margin: auto;
 }
 </style>

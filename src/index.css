@@ -31,7 +31,7 @@ select {
 }
 
 button {
-  background-color: #4299e1;
+  background-color: #41b883;
   color: white;
   padding: 0.5rem 1rem;
   border-radius: 0.25rem;
@@ -42,7 +42,7 @@ button {
 }
 
 button:hover {
-  background-color: #3182ce;
+  background-color: #35495e;
 }
 
 ul {
@@ -58,19 +58,19 @@ ul li:before {
 
 .bg-blue-500 {
   --bg-opacity: 1;
-  background-color: #4299e1;
+  background-color: #41b883;
   background-color: rgba(66, 153, 225, var(--bg-opacity));
 }
 
 .bg-blue-500:hover {
   --bg-opacity: 1;
-  background-color: #3182ce;
+  background-color: #35495e;
   background-color: rgba(49, 130, 206, var(--bg-opacity));
 }
 
 .hover\:bg-blue-700:hover {
   --bg-opacity: 1;
-  background-color: #2b6cb0;
+  background-color: #35495e;
   background-color: rgba(43, 108, 176, var(--bg-opacity));
 }
 
