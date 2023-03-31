@@ -190,20 +190,28 @@
       </div>
     </div>
   </form>
-  <div class="modal" v-if="modalConfirmacion">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Formulario enviado con éxito</h5>
+
+  <div
+    class="fixed z-50 inset-0 overflow-y-auto"
+    :class="{ hidden: !showModal }"
+  >
+    <div class="flex items-center justify-center min-h-screen">
+      <div class="fixed inset-0 bg-gray-800 opacity-75"></div>
+      <div class="bg-white rounded-lg p-8 z-50">
+        <div class="mb-4">
+          <h3 class="text-lg font-medium text-gray-900">Enviado con éxito</h3>
+          <p class="text-gray-600">
+            Tu formulario ha sido enviado correctamente.
+          </p>
+        </div>
+        <div class="flex justify-end">
           <button
-            type="button"
-            class="close"
-            @click="modalConfirmacion = false"
+            @click="showModal = false"
+            class="bg-gray-700 text-white px-4 py-2 rounded-lg"
           >
-            <span>&times;</span>
+            Cerrar
           </button>
         </div>
-        <div class="modal-body">¡Gracias por enviar el formulario!</div>
       </div>
     </div>
   </div>
@@ -213,6 +221,7 @@
 export default {
   data() {
     return {
+      showModal: false,
       paises: [],
       paisSeleccionado: "",
       generos: ["Masculino", "Femenino", "Otro"],
@@ -300,7 +309,7 @@ export default {
 
       // mostrar el modal de confirmación
       //alert("Formulario enviado con éxito");
-      this.modalConfirmacion = true;
+      this.showModal = true;
 
       // también puedes reiniciar las propiedades del formulario aquí
     },
