@@ -15,7 +15,7 @@
 }
 
 /* Para pantallas medianas */
-@media (min-width: 400px) and (max-width: 1024px) {
+@media (min-width: 350px) and (max-width: 1024px) {
   .container {
     margin-left: 25vw;
     margin-right: 25vw;
